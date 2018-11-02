@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Loop & Array</title>
+  </head>
+  <body>
+    <h1>Loop & Array</h1>
+    <script type="text/javascript">
+      var coworkers = ['jake', 'christy', 'lala', 'sugar','edi', "koko"];
+    </script>
+    <h2>Co-workers</h2>
+    <ul>
+      <script type="text/javascript">
+        var i = 0;
+        while(i < coworkers.length){
+        document.write("<li>"+coworkers[i]+"</li>");
+        i = i + 1;
+      }
+      </script>
+    </ul>
+    <ul>
+      <script type="text/javascript">
+        var j = 0;
+        for (var j = 0; j < coworkers.length; j++) {
+          document.write('<li><a href="http://a.com/'+coworkers[i]+'">'+coworkers[i]+'</a></li>');
+        }
+      </script>
+    </ul>
+  </body>
+</html>
