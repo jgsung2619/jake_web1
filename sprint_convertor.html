@@ -1,10 +1,17 @@
-<!DOCTYPE html>
+m<!DOCTYPE html>
+
 <html lang="en" dir="ltr">
+
   <head>
+
     <meta charset="utf-8">
+
     <title></title>
+
   </head>
+
   <body>
+
     <p>
       Math.ceil() : 소수점 올림, 정수 반환 <br>
       Math.floor() : 소수점 버림, 정수 반환 <br>
@@ -12,41 +19,49 @@
     </p>
 
     <input type="date" id="date">
-    <input type="button" value="input" onclick="
-     var start = new Date(2018, 08, 03);  // 2019 sprint start at 2019/9/3
-     var inputdate = document.querySelector('#date').value;
-     var inputdatenew = new Date(inputdate)
-     document.write(inputdatenew+'<br>');
-     document.write(start+'<br>');
-     document.write(inputdatenew - start);      // (2018/11/05 - 2018/9/3)/14 + 1
-    "><br>
+    <input type="button" id="converting" value="input" onclick="
 
+var inputvalue = document.querySelector('#date').value;
+var inputdate = new Date(inputvalue);
+sprintConvertor(inputdate)
 
+//document.write(inputdatenew+'<br>');
+//document.write(start+'<br>');
+//document.write(inputdatenew - start); // (2018/11/05 - 2018/9/3)/14 + 1
 
+"><br>
+
+<div id="result"> </div>
+
+<p>
+
+</p>
 
     <script type="text/javascript">
 
-      var today = new Date();
-      var startdate = new Date(2018, 08, 03);  // 2019 sprint start at 2019/9/3
-      var inputdate = document.querySelector('#date').value;
-      document.write(inputdate);
-      var elapsed = today - startdate; // mmsec
-      var elapsedDate = ((elapsed/1000)/60/60)/24;
-      var todaysprint = Math.round(elapsedDate/14) + 1;
+var today = new Date();
+var startdate = new Date(2018, 08, 03); // 2019 sprint start at 2019/9/3
 
 
+function sprintConvertor(self){
+var elapsed = self - startdate; // mmsec
+var elapsedDate = ((elapsed/1000)/60/60)/24;
+var todaysprint = Math.round(elapsedDate/14) + 1;
+var result = "입력하신 날짜의 sprint는 SPRINT"+today+" 입니다."
 
-      document.write(elapsed + '<br>');
-      document.write(elapsedDate + '<br>');
+document.querySelector("#result").innerHTML = result;
 
-      document.write('Today: ' + today + '<br>');      // (2018/11/05 - 2018/9/3)/14 + 1
-      document.write('Start Date: ' + startdate +'<br>');      // (2018/11/05 - 2018/9/3)/14 + 1
-      document.write(todaysprint);      // (2018/11/05 - 2018/9/3)/14 + 1
+//document.write(elapsed + '<br>');
+//document.write(elapsedDate + '<br>');
+//document.write('Today: ' + today + '<br>'); // (2018/11/05 - 2018/9/3)/14 + 1
+//document.write('Start Date: ' + startdate +'<br>'); // (2018/11/05 - 2018/9/3)/14 + 1
 
+}
 
-
-    </script>
-
+</script>
 
   </body>
+
 </html>
+
+    
