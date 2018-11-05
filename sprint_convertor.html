@@ -1,67 +1,56 @@
-m<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="en" dir="ltr">
 
   <head>
-
     <meta charset="utf-8">
-
     <title></title>
-
   </head>
 
   <body>
-
     <p>
-      Math.ceil() : 소수점 올림, 정수 반환 <br>
+      <!-- Math.ceil() : 소수점 올림, 정수 반환 <br>
       Math.floor() : 소수점 버림, 정수 반환 <br>
-      Math.round() : 소수점 반올림, 정수 반환 <br>
+      Math.round() : 소수점 반올림, 정수 반환 <br> -->
     </p>
-
-    <input type="date" id="date">
+    <div id="result1"> </div>
+    <hr>
+    <div><b>원하시는 날짜를 입력하세요.(Sprint1 시작일인 2018/9/3부터 입력 가능)</b></div>
+    <input type="date" id="date" min="2018-09-03" max="2019-12-31">
     <input type="button" id="converting" value="input" onclick="
-
-var inputvalue = document.querySelector('#date').value;
-var inputdate = new Date(inputvalue);
-sprintConvertor(inputdate)
-
-//document.write(inputdatenew+'<br>');
-//document.write(start+'<br>');
-//document.write(inputdatenew - start); // (2018/11/05 - 2018/9/3)/14 + 1
-
-"><br>
-
-<div id="result"> </div>
-
-<p>
-
-</p>
+       var inputvalue = document.querySelector('#date').value;
+       var inputdate = new Date(inputvalue);
+       dateToSprint(inputdate)
+    ">
+    <hr>
+    <div id="result">> </div>
 
     <script type="text/javascript">
+      document.querySelector("#date").valueAsDate = new Date();
+      var today = new Date();
+      var startdate = new Date(2018, 08, 03); // 2019 sprint start at 2019/9/3
+      var nowsprint = dateToSprint(today);
 
-var today = new Date();
-var startdate = new Date(2018, 08, 03); // 2019 sprint start at 2019/9/3
+      function dateToSprint(self){
+      var elapsed = self - startdate; // mmsec
+      var elapsedDate = ((elapsed/1000)/60/60)/24;
+      var inputsprint = Math.round(elapsedDate/14) + 1;
+      if(self === today){
+        var result = "<b>"+"※오늘의 sprint는 SPRINT"+inputsprint+" 입니다."+"<b>";
+        document.querySelector("#result1").innerHTML = result;
+      } else if(elapsed < 0){
+        alert("2018년 9월 2일 이후 날짜를 입력해 주세요.");
+      } else if(elapsed > 0){
+        var result = "> 입력하신 날짜의 sprint는 SPRINT"+inputsprint+" 입니다.";
+        document.querySelector("#result").innerHTML = result;
+      }
 
-
-function sprintConvertor(self){
-var elapsed = self - startdate; // mmsec
-var elapsedDate = ((elapsed/1000)/60/60)/24;
-var todaysprint = Math.round(elapsedDate/14) + 1;
-var result = "입력하신 날짜의 sprint는 SPRINT"+today+" 입니다."
-
-document.querySelector("#result").innerHTML = result;
 
 //document.write(elapsed + '<br>');
 //document.write(elapsedDate + '<br>');
 //document.write('Today: ' + today + '<br>'); // (2018/11/05 - 2018/9/3)/14 + 1
 //document.write('Start Date: ' + startdate +'<br>'); // (2018/11/05 - 2018/9/3)/14 + 1
-
-}
-
-</script>
-
+    }
+    </script>
   </body>
-
 </html>
-
-    
