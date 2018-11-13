@@ -1,0 +1,130 @@
+
+<div id="view_rms_initiative_related">
+	<table width=300 border=1 cellpadding=0 cellspacing=0 style="border-collapse:collapse">
+		<thead>
+		<tr>
+			<th>팀별 Total T/C</th>
+			<th>합계</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td>Initiative 연결된 TC filter</td>
+			<td><div id="swpReqInProgress" class='issueLink' instance='dev' jql= 'filter=45954'></div></td>
+		</tr>
+		<tr>
+			<td>전체 Epic에 연결된 TC filter</td>
+			<td><div id="swpReqInProgress" class='issueLink' instance='dev' jql= 'filter=45946'></div></td>
+		</tr>
+		<tr>
+			<td>전체 Story에 연결된 TC filter</td>
+			<td><div id="swpReqInProgress" class='issueLink' instance='dev' jql= 'filter=45945'></div></td>
+		</tr>
+		<tr>
+			<td>전체 TC filter</td>
+			<td><div id="swpReqInProgress" class='issueLink' instance='dev' jql= 'filter=45946 or filter=45945 or filter=45954'></div></td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+<div id='test_div'></div>
+
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script language="javascript">
+google.load("visualization", "1", {packages:["corechart"]});
+
+var groups = ['TV Broadcast Solution팀(280989)_grp', 'TV Contents Service팀(307024)_grp', 'TV CP App팀(280991)_grp', "TV BSP Core팀(280987)_Grp", "TV Initial제품개발Project(310470)_grp", "TV Intelligent Service팀(307026)_grp", "TV Media Solution팀(280988)_grp", "TV SW Deployment Project(310490)_grp", "TV System App팀(267981)_grp", "TV System Core팀(254931)_grp"];
+var dataArray = new Array();
+var nIssueNum = 0;
+
+function getIssueCount(instance, obj, jql) {
+
+	if (undefined==instance) instance = "dev";
+	var jiraInstance;
+	if ("dev"==instance) {
+		jiraInstance = "issue";
+	} else if ("q"==instance ) {
+		jiraInstance = "qi"
+	}
+	for (i=0; i < groups.length; i++) {
+		getRestCall(groups[i]);
+	}
+}
+
+function getRestCall(group) {
+	var jql = 'filter=45954 and assignee in membersOf("' + group + '")';
+	var jiraURL ="http://hlm.lge.com/issue/issues?jql=" + encodeURIComponent(jql);
+	var jsondata={};
+	jsondata["jql"] = jql;
+	jsondata["startAt"] = 0;
+	jsondata["maxResults"] = 1;
+	var	fieldArray=[];
+	fieldArray[0]="summary";
+	jsondata["fields"] = fieldArray;
+
+	$.ajax({
+    	type: "POST",
+		dataType : "json",
+		contentType: "application/json",
+		data : JSON.stringify(jsondata),
+	    xhrFields: {
+			withCredentials: true
+	    },
+		url: "http://hlm.lge.com/issue/rest/api/2/search",
+		success:function(data) {
+			console.log('jql=' + jql + ',data=' + data);
+			//$(obj).html('<a href="'+jiraURL+'" target="_blank">' + data.total + '</a>');
+			//calcObj($(obj));
+			dataArray[parseInt(nIssueNum)] = new Array(group, data.total);
+			nIssueNum++;
+			// 마지막 그룹까지 결과값을 받아오면 그래프 그리기
+			if(nIssueNum == groups.length) {
+				viewGraph();
+			}
+		},
+		error : function(jqXHR, errorThrown) {
+			//$('#issueLink').text(JSON.stringify(jsondata) + "\n" + jqXHR.responseText);
+			//console.log(jqXHR);
+		}
+	});
+}
+
+
+function viewGraph() {
+	var dataChart = new google.visualization.DataTable();
+	dataChart.addColumn('string', 'Team');
+	dataChart.addColumn('number', '#Issue');
+
+
+	for(i=0; i < dataArray.length; i++) {
+		dataChart.addRow();
+		dataChart.setCell(i, 0, dataArray[i][0]);
+		dataChart.setCell(i, 1, dataArray[i][1]);
+	}
+
+
+	var options = {
+		title: 'TEST'
+	}
+
+	var view = new google.visualization.DataView(dataChart);
+	var chart = new google.visualization.ColumnChart(document.getElementById('test_div'));
+    chart.draw(view, options);
+}
+
+
+$(document).ready( function() {
+//	$('div').find('.issueLink').each(function () {
+//		getIssueCount($(this).attr('instance'), $(this), $(this).attr('jql'));
+//	});
+//	$('#view_rms_initiative_related table tbody tr td').css({"text-align":"center" });
+
+
+	for (i=0; i < groups.length; i++) {
+		getRestCall(groups[i]);
+	}
+});
+
+
+</script>
